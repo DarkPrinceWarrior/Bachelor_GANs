@@ -11,7 +11,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:' \
                                         '//postgres:123@localhost:5432/gen_Imagedb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JSON_AS_ASCII'] = False
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost:5432/gen_Imagedb'
 db = SQLAlchemy(app)
 
 
