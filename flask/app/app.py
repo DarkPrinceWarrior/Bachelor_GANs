@@ -1,12 +1,11 @@
-from flask import render_template, Flask
-from flask_sqlalchemy import SQLAlchemy
-
-# from models.entities import app
-import config
 import models.db_setup
-from models.db_setup import db_session
-from models.entities import Role, UserType
+from flask import render_template
+
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 import config
+from models.db_setup import db_session
+from models.entities import Role
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql:' \
@@ -21,10 +20,15 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 
-@app.route("/", methods=['GET'])
+@app.route("/")
 def index():
-    roles = db_session.query(Role).all()
-    return render_template('index.html', roles=roles)
+    return "hello"
+
+
+# @app.route("/", methods=['GET'])
+# def index():
+#     roles = db_session.query(Role).all()
+#     return render_template('index.html', roles=roles)
 
 
 if __name__ == '__main__':
