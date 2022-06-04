@@ -2,13 +2,15 @@ from flask import render_template, Flask
 from flask_sqlalchemy import SQLAlchemy
 
 # from models.entities import app
+import config
 import models.db_setup
 from models.db_setup import db_session
 from models.entities import Role, UserType
+import config
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:' \
-                                        '//postgres:123@localhost:5432/gen_Imagedb'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql:' \
+                                        f'//postgres:{config.password}@localhost:5432/gen_Imagedb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JSON_AS_ASCII'] = False
 db = SQLAlchemy(app)
