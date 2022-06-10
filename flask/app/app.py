@@ -46,6 +46,11 @@ def index():
     return render_template('index.html', roles=roles, form=form)
 
 
+@app.route("/home", methods=['GET', 'POST'])
+def home():
+    return render_template("new_index.html")
+
+
 if __name__ == '__main__':
     # models.db_setup.init_db()
     app.run(host="0.0.0.0", debug=True)
