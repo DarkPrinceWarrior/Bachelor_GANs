@@ -6,9 +6,78 @@
 </head>
 <body>
 
-<h2></h2>
+<h2> Our app </h2>
+<h3> <label for="">Choose face features:</label></h3>
+<br>
+
+
+<label for="face-attributes">Choose sex:</label>
+<select name="face-attributes" id="face-attributes">
+
+
+    <option value="man">man</option>
+    <option value="woman">woman</option>
+
+</select>
+<br><br>
+
+<label for="face-attributes">Choose hair features:</label>
+<select name="face-attributes" id="face-attributes">
+
+    <option value="short">short</option>
+    <option value="long">long</option>
+
+</select>
+<br><br>
+
+<label for="face-attributes">Choose smile features:</label>
+<select name="face-attributes" id="face-attributes">
+
+    <option value="happy">happy</option>
+    <option value="sad">sad</option>
+    <option value="normal">normal</option>
+
+</select>
+<br><br>
+<label for="face-attributes">Choose age features:</label>
+<select name="face-attributes" id="face-attributes">
+
+    <option value="young">young</option>
+    <option value="middle">middle</option>
+    <option value="old">old</option>
+
+</select>
+<br><br>
+<label for="face-attributes">Choose eyes features:</label>
+<select name="face-attributes" id="face-attributes">
+
+    <option value="big">short</option>
+    <option value="small">long</option>
+
+</select>
+<br><br>
+<label for="face-attributes">Choose nose features:</label>
+<select name="face-attributes" id="face-attributes">
+
+    <option value="big">big</option>
+    <option value="small">small</option>
+
+</select>
+<br>
+<br>
+<label for="face-attributes">Choose face shape features:</label>
+<select name="face-attributes" id="face-attributes">
+
+    <option value="oval">oval</option>
+    <option value="square">square</option>
+    <option value="round">round</option>
+
+</select>
+
+
+<br><br><br><br>
 {% for role in roles %}
-<h1>{{role.role_name}}</h1>
+<h3>{{role.role_name}}</h3>
 {% endfor %}
 
 </body>
