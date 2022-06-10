@@ -6,73 +6,47 @@
 </head>
 <body>
 
-<h2> Our app </h2>
-<h3> <label for="">Choose face features:</label></h3>
-<br>
 
+    <h2> Our app </h2>
+    <h3> Choose face features: </h3>
+    <br>
 
-<label for="face-attributes">Choose sex:</label>
-<select name="face-attributes" id="face-attributes">
+     <form method="POST">
+    {{ form.csrf_token }}
+    {{ form.sex }}
+    {{ form.hair }}
+     {{ form.eyes }}
+     {{ form.smile }}
+     {{ form.face }}
+     {{ form.age }}
+     {{ form.nose }}
+    <input type="submit">
+    </form>
 
-
-    <option value="man">man</option>
-    <option value="woman">woman</option>
-
-</select>
-<br><br>
-
-<label for="face-attributes">Choose hair features:</label>
-<select name="face-attributes" id="face-attributes">
-
-    <option value="short">short</option>
-    <option value="long">long</option>
-
-</select>
-<br><br>
-
-<label for="face-attributes">Choose smile features:</label>
-<select name="face-attributes" id="face-attributes">
-
-    <option value="happy">happy</option>
-    <option value="sad">sad</option>
-    <option value="normal">normal</option>
-
-</select>
-<br><br>
-<label for="face-attributes">Choose age features:</label>
-<select name="face-attributes" id="face-attributes">
-
-    <option value="young">young</option>
-    <option value="middle">middle</option>
-    <option value="old">old</option>
-
-</select>
-<br><br>
-<label for="face-attributes">Choose eyes features:</label>
-<select name="face-attributes" id="face-attributes">
-
-    <option value="big">short</option>
-    <option value="small">long</option>
-
-</select>
-<br><br>
-<label for="face-attributes">Choose nose features:</label>
-<select name="face-attributes" id="face-attributes">
-
-    <option value="big">big</option>
-    <option value="small">small</option>
-
-</select>
-<br>
-<br>
-<label for="face-attributes">Choose face shape features:</label>
-<select name="face-attributes" id="face-attributes">
-
-    <option value="oval">oval</option>
-    <option value="square">square</option>
-    <option value="round">round</option>
-
-</select>
+{#    <script>#}
+{##}
+{#        const state_select = document.getElementById("state");#}
+{#        const city_select = document.getElementById("city");#}
+{##}
+{#        state_select.onchange = function()  {#}
+{##}
+{#            state = state_select.value;#}
+{##}
+{#            fetch('/city/' + state).then(function(response) {#}
+{##}
+{#                response.json().then(function(data) {#}
+{#                    var optionHTML = '';#}
+{##}
+{#                    for (var city of data.cities) {#}
+{#                        optionHTML += '<option value="' + city.id + '">' + city.name + '</option>';#}
+{#                    }#}
+{##}
+{#                    city_select.innerHTML = optionHTML;#}
+{#                })#}
+{##}
+{#            });#}
+{#        }#}
+{#    </script>#}
 
 
 <br><br><br><br>
