@@ -1,3 +1,4 @@
+from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from models.db_setup import Base
@@ -20,19 +21,22 @@ class Role(Base):
         }
 
 
-class UserAccount(Base):
+class UserAccount(Base, UserMixin):
     __tablename__ = 'user_account'
 
     phy_id = Column(Integer, primary_key=True, autoincrement=True)
     login = Column(String(40), nullable=False, unique=True)
     email = Column(String(40), nullable=False, unique=True)
-    phyone_password = Column(String(40), nullable=False)
+    phyone_password = Column(String(255), nullable=False)
     subscription_ = Column(Boolean, nullable=False)
 
     role_id = Column(Integer, ForeignKey('role_app.role_id'), nullable=False)
 
     images = relationship('Image', backref='phyone', lazy="joined",
                           cascade='all, delete')
+
+    def get_id(self):
+        return (self.phy_id)
 
     def dictionarize(self):
         return {
@@ -57,7 +61,7 @@ class CompanyAccount(Base):
     email = Column(String(40), nullable=False, unique=True)
     phone_number = Column(String(40), nullable=False)
     website = Column(String(40), nullable=False)
-    jurone_password = Column(String(40), nullable=False)
+    jurone_password = Column(String(255), nullable=False)
     subscription_ = Column(Boolean, nullable=False)
 
     role_id = Column(Integer, ForeignKey('role_app.role_id'), nullable=False)

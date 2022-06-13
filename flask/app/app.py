@@ -1,5 +1,5 @@
 from flask_bcrypt import Bcrypt
-from flask import render_template, request, jsonify, redirect, url_for
+from flask import render_template, request, jsonify, redirect, url_for, flash
 from flask.app import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
@@ -60,51 +60,37 @@ def index():
     return render_template('index.html', roles=roles, form=form)
 
 
+class LoginForm(FlaskForm):
+    login = StringField(validators=[
+        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Login"})
+
+    password = PasswordField(validators=[
+        InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+
+    submit = SubmitField('Login')
+
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = db_session.query(UserAccount).filter_by(login=form.login.data).first()
-        if user:
-            if bcrypt.check_password_hash(user.password, form.password.data):
-                login_user(user)
-                return redirect(url_for('dashboard'))
+        if user and bcrypt.check_password_hash(user.phyone_password, form.password.data):
+            flash("you were just logged in!")
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        else:
+            flash("bad username or password")
+
     return render_template("login.html", form=form)
-
-
-@app.route("/register", methods=['GET', 'POST'])
-def register():
-    form = RegisterForm()
-
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = UserAccount(login=form.login.data, phyone_password=hashed_password,
-                               email="HHHH",
-                               subscription_=True,
-                               role_id=1)
-        db_session.add(new_user)
-        db_session.commit()
-        return redirect(url_for('login'))
-
-    return render_template("register.html",form=form)
-
-
-@app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def dashboard():
-    return render_template('dashboard.html')
-
-
-@app.route('/logout', methods=['GET', 'POST'])
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
 
 
 class RegisterForm(FlaskForm):
     login = StringField(validators=[
         InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Login"})
+
+    email = StringField(validators=[
+        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Email"})
 
     password = PasswordField(validators=[
         InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
@@ -118,14 +104,35 @@ class RegisterForm(FlaskForm):
                 'That login already exists. Please choose a different one.')
 
 
-class LoginForm(FlaskForm):
-    login = StringField(validators=[
-        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Login"})
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
 
-    password = PasswordField(validators=[
-        InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf8')
+        new_user = UserAccount(login=form.login.data, phyone_password=hashed_password,
+                               email=form.email.data,
+                               subscription_=True,
+                               role_id=3)
 
-    submit = SubmitField('Login')
+        db_session.add(new_user)
+        db_session.commit()
+        return redirect(url_for('login'))
+
+    return render_template("register.html", form=form)
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
