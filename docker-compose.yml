@@ -6,11 +6,3 @@ services:
     container_name: flask_app
     expose:
         - "8080"
-  nginx:
-    build: ./nginx
-    container_name: nginx
-    image: nginx:latest
-#    depends_on:
-#      - app
-    ports:
-      - "80:80"
