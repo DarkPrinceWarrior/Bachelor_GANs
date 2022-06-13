@@ -49,9 +49,14 @@ def index():
     return render_template('index.html', roles=roles, form=form)
 
 
-@app.route("/home", methods=['GET', 'POST'])
-def home():
-    return render_template("new_index.html")
+@app.route("/login", methods=['GET', 'POST'])
+def auth():
+    return render_template("login.html")
+
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    return render_template("register.html")
 
 
 if __name__ == '__main__':
