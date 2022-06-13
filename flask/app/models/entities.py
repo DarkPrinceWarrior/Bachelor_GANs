@@ -8,10 +8,10 @@ class Role(Base):
     role_id = Column(Integer, primary_key=True, autoincrement=True)
     role_name = Column(String(40), nullable=False, unique=True)
 
-    physicalusers = relationship('PhysUser', backref='role_app', lazy="joined",
+    users = relationship('UserAccount', backref='role_app', lazy="joined",
                          cascade='all, delete')
-    juridicalusers = relationship('JuridUser', backref='role_app', lazy="joined",
-                         cascade='all, delete')
+    companies = relationship('CompanyAccount', backref='role_app', lazy="joined",
+                             cascade='all, delete')
 
     def dictionarize(self):
         return {
@@ -20,8 +20,8 @@ class Role(Base):
         }
 
 
-class PhysUser(Base):
-    __tablename__ = 'phyone'
+class UserAccount(Base):
+    __tablename__ = 'user_account'
 
     phy_id = Column(Integer, primary_key=True, autoincrement=True)
     login = Column(String(40), nullable=False, unique=True)
@@ -45,8 +45,8 @@ class PhysUser(Base):
         }
 
 
-class JuridUser(Base):
-    __tablename__ = 'jurone'
+class CompanyAccount(Base):
+    __tablename__ = 'company_account'
 
     jur_id = Column(Integer, primary_key=True, autoincrement=True)
     company_name = Column(String(40), nullable=False, unique=True)
@@ -88,8 +88,8 @@ class Image(Base):
     image_id = Column(Integer, primary_key=True, autoincrement=True)
     image_path = Column(String(40), nullable=False, unique=True)
 
-    fk_jur_id = Column(Integer, ForeignKey('jurone.jur_id'), nullable=False)
-    fk_phy_id = Column(Integer, ForeignKey('phyone.phy_id'), nullable=False)
+    fk_jur_id = Column(Integer, ForeignKey('company_account.jur_id'), nullable=False)
+    fk_phy_id = Column(Integer, ForeignKey('user_account.phy_id'), nullable=False)
 
     def dictionarize(self):
         return {

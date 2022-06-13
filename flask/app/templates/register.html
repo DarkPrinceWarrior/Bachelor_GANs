@@ -26,6 +26,15 @@
 
   <h1>Register Page</h1>
 
+   <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {{ form.login }}
+        {{ form.password }}
+        {{ form.submit }}
+    </form>
+
+  <br>
+  <a href="{{ url_for('register') }}">Register for company</a>
 
 
 </body>

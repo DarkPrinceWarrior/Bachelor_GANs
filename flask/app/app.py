@@ -1,25 +1,36 @@
-import numpy as np
-import torch
-from flask import render_template, request, jsonify
+from flask_bcrypt import Bcrypt
+from flask import render_template, request, jsonify, redirect, url_for
 from flask.app import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from tensorflow import Variable
-from wtforms import SelectField
+from wtforms import SelectField, StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length, ValidationError
 
 from models.db_setup import db_session
-from models.entities import Role
+from models.entities import Role, UserAccount
 
 import os
 
 SECRET_KEY = os.urandom(32)
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost:5432/gen_Imagedb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JSON_AS_ASCII'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
 db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(phy_id):
+    return db_session.query(UserAccount).get(int(phy_id))
 
 
 class Form(FlaskForm):
@@ -50,13 +61,71 @@ def index():
 
 
 @app.route("/login", methods=['GET', 'POST'])
-def auth():
-    return render_template("login.html")
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = db_session.query(UserAccount).filter_by(login=form.login.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('dashboard'))
+    return render_template("login.html", form=form)
 
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        new_user = UserAccount(login=form.login.data, phyone_password=hashed_password,
+                               email="HHHH",
+                               subscription_=True,
+                               role_id=1)
+        db_session.add(new_user)
+        db_session.commit()
+        return redirect(url_for('login'))
+
+    return render_template("register.html",form=form)
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
+class RegisterForm(FlaskForm):
+    login = StringField(validators=[
+        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Login"})
+
+    password = PasswordField(validators=[
+        InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+
+    submit = SubmitField('Register')
+
+    def validate_login(self, user_login):
+        existing_user_login = db_session.query(UserAccount).filter_by(login=user_login.data).first()
+        if existing_user_login:
+            raise ValidationError(
+                'That login already exists. Please choose a different one.')
+
+
+class LoginForm(FlaskForm):
+    login = StringField(validators=[
+        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Login"})
+
+    password = PasswordField(validators=[
+        InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+
+    submit = SubmitField('Login')
 
 
 if __name__ == '__main__':
