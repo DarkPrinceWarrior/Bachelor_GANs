@@ -6,7 +6,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from tensorflow import Variable
 from wtforms import SelectField
-from pytorch2keras.converter import pytorch_to_keras
 
 from models.db_setup import db_session
 from models.entities import Role
