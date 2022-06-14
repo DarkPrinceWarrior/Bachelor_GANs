@@ -14,5 +14,5 @@ app.config['JSON_AS_ASCII'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
 db = SQLAlchemy(app)
 
-from app import views
+from app import controllers
 
