@@ -57,7 +57,7 @@ def index():
         data = {key: value for key, value in form.data.items() if key != "csrf_token"}
         return jsonify(data)
 
-    return render_template('index.html', roles=roles, form=form)
+    return render_template('templates/index.html', roles=roles, form=form)
 
 
 class LoginForm(FlaskForm):
@@ -82,7 +82,7 @@ def login():
         else:
             flash("bad username or password")
 
-    return render_template("login.html", form=form)
+    return render_template("templates/login.html", form=form)
 
 
 class RegisterForm(FlaskForm):
@@ -119,13 +119,13 @@ def register():
         db_session.commit()
         return redirect(url_for('login'))
 
-    return render_template("register.html", form=form)
+    return render_template("templates/register.html", form=form)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    return render_template('templates/dashboard.html')
 
 
 @app.route('/logout', methods=['GET', 'POST'])

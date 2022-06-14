@@ -12,5 +12,5 @@ Base = declarative_base()
 # create the db
 def init_db():
     from models.entities import Role
-    from models.entities import UserType
+    from models.entities import UserAccount
     Base.metadata.create_all(engine)

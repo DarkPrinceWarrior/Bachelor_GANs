@@ -1,15 +1,15 @@
-!/flask/app/NN_module/model/eval_celeba.yml
+!/app/NN_module/model/eval_celeba.yml
 
-!/flask/app/NN_module/model/image_encoder550.pth
+!/app/NN_module/model/image_encoder550.pth
 
-!/flask/app/NN_module/model/netD0.pth
+!/app/NN_module/model/netD0.pth
 
-!/flask/app/NN_module/model/netD1.pth
+!/app/NN_module/model/netD1.pth
 
-!/flask/app/NN_module/model/netD2.pth
+!/app/NN_module/model/netD2.pth
 
-!/flask/app/NN_module/model/netG_epoch_600.pth
+!/app/NN_module/model/netG_epoch_600.pth
 
-!/flask/app/NN_module/model/text_encoder550.pth
+!/app/NN_module/model/text_encoder550.pth
 
-!/flask/app/NN_module/model/train_celeba.yml
+!/app/NN_module/model/train_celeba.yml
