@@ -1,27 +1,13 @@
-from flask_bcrypt import Bcrypt
 from flask import render_template, request, jsonify, redirect, url_for, flash
-from flask.app import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
-from tensorflow import Variable
 from wtforms import SelectField, StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
-
 from models.db_setup import db_session
 from models.entities import Role, UserAccount
 
-import os
-
-SECRET_KEY = os.urandom(32)
-
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost:5432/gen_Imagedb'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JSON_AS_ASCII'] = False
-app.config['SECRET_KEY'] = SECRET_KEY
-db = SQLAlchemy(app)
+from app import app
+from app import bcrypt
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -52,12 +38,11 @@ def shutdown_session(exception=None):
 def index():
     form = Form()
     roles = db_session.query(Role).all()
-
     if request.method == "POST":
         data = {key: value for key, value in form.data.items() if key != "csrf_token"}
         return jsonify(data)
 
-    return render_template('templates/index.html', roles=roles, form=form)
+    return render_template('index.html', roles=roles, form=form)
 
 
 class LoginForm(FlaskForm):
@@ -82,7 +67,7 @@ def login():
         else:
             flash("bad username or password")
 
-    return render_template("templates/login.html", form=form)
+    return render_template("login.html", form=form)
 
 
 class RegisterForm(FlaskForm):
@@ -119,13 +104,13 @@ def register():
         db_session.commit()
         return redirect(url_for('login'))
 
-    return render_template("templates/register.html", form=form)
+    return render_template("register.html", form=form)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('templates/dashboard.html')
+    return render_template('dashboard.html')
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -133,14 +118,3 @@ def dashboard():
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
-
-if __name__ == '__main__':
-    # path = "../app/NN_module/model/image_encoder550.pth"
-    # model = torch.load(path, map_location=torch.device("cuda"))
-    # input_np = np.random.uniform(0, 1, (1, 10, 32, 32))
-    # input_var = Variable(torch.FloatTensor(input_np))
-    # k_model = pytorch_to_keras(model, input_var, [(10, None, None,)], verbose=True)
-
-    # models.db_setup.init_db()
-    app.run(host="0.0.0.0", debug=True)
