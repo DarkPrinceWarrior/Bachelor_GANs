@@ -46,8 +46,8 @@ def login():
     if form.validate_on_submit():
         user = db_session.query(UserAccount).filter_by(login=form.login.data).first()
         if user and bcrypt.check_password_hash(user.phyone_password, form.password.data):
-            flash("you were just logged in!")
             login_user(user)
+            flash("you were just logged in!", "info")
             return redirect(url_for('dashboard'))
         else:
             flash("bad username or password")
