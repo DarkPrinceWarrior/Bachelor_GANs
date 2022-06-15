@@ -32,10 +32,10 @@ def index():
 
 class LoginForm(FlaskForm):
     login = StringField(validators=[
-        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Login"})
+        InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control", "placeholder": "Login"})
 
     password = PasswordField(validators=[
-        InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+        InputRequired(), Length(min=8, max=20)], render_kw={"class": "form-control","placeholder": "Password"})
 
     remember = BooleanField("remember me")
 
@@ -57,13 +57,13 @@ def login():
 
 class RegisterForm(FlaskForm):
     login = StringField(validators=[
-        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Login"})
+        InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control","placeholder": "Login"})
 
     email = StringField(validators=[
-        InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Email"})
+        InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control","placeholder": "Email"})
 
     password = PasswordField(validators=[
-        InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
+        InputRequired(), Length(min=8, max=20)], render_kw={"class": "form-control","placeholder": "Password"})
 
     submit = SubmitField('Register')
 

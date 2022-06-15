@@ -7,15 +7,27 @@
 {% block content %}
 
     <br>
-<h1>Register Page</h1>
 
-   <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ form.login }}
-        {{ form.email }}
-        {{ form.password }}
-        {{ form.submit }}
-    </form>
+ <main class="form-signin w-25 m-auto">
+      <form  class="form-signin" method="POST" action="/register">
+        <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+            {{ form.hidden_tag() }}
+        <div class="form-floating">
+             {{ form.login }}
+        </div>
+          <br>
+           <div class="form-floating">
+            {{ form.email }}
+        </div>
+          <br>
+        <div class="form-floating">
+            {{ form.password }}
+        </div>
+          <br>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">sign up</button>
+      </form>
+    </main>
+
 
   <br>
   <a href="{{ url_for('register') }}">Register for company</a>
