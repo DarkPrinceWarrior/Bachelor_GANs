@@ -120,7 +120,14 @@ def demo():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
+    path = "models/images_storage/mordor.jpg"
     return render_template('dashboard.html')
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    return render_template('profile.html')
 
 
 @app.route('/logout', methods=['GET', 'POST'])

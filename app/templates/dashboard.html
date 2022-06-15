@@ -9,7 +9,9 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-                <h2>{{ message }}</h2>
+                 {% if message == "you were just logged in!"%}
+                    <h2>{{ message }}</h2>
+                 {% endif %}
             {% endfor %}
         {% endif %}
     {% endwith %}
