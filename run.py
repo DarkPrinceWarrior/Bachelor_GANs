@@ -1,6 +1,5 @@
 from app import app
 
-
 if __name__ == '__main__':
     # path = "../app/NN_module/model/image_encoder550.pth"
     # model = torch.load(path, map_location=torch.device("cuda"))

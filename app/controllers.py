@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify, redirect, url_for, flash
 from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, PasswordField, SubmitField
+from wtforms import SelectField, StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import InputRequired, Length, ValidationError
 from models.db_setup import db_session
 from models.entities import Role, UserAccount
@@ -19,16 +19,6 @@ def load_user(phy_id):
     return db_session.query(UserAccount).get(int(phy_id))
 
 
-class Form(FlaskForm):
-    sex = SelectField('sex', choices=["man", "woman"])
-    hair = SelectField('hair', choices=["long", "short"])
-    eyes = SelectField('eyes', choices=["big", "small"])
-    smile = SelectField('smile', choices=["normal", "happy", "sad"])
-    face = SelectField('face', choices=["oval", "square", "round"])
-    age = SelectField('age', choices=["young", "middle", "old"])
-    nose = SelectField('nose', choices=["big", "small"])
-
-
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
@@ -36,13 +26,8 @@ def shutdown_session(exception=None):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    form = Form()
     roles = db_session.query(Role).all()
-    if request.method == "POST":
-        data = {key: value for key, value in form.data.items() if key != "csrf_token"}
-        return jsonify(data)
-
-    return render_template('index.html', roles=roles, form=form)
+    return render_template('index.html', roles=roles)
 
 
 class LoginForm(FlaskForm):
@@ -52,7 +37,7 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators=[
         InputRequired(), Length(min=8, max=20)], render_kw={"placeholder": "Password"})
 
-    submit = SubmitField('Login')
+    remember = BooleanField("remember me")
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -105,6 +90,31 @@ def register():
         return redirect(url_for('login'))
 
     return render_template("register.html", form=form)
+
+
+class DemoForm(FlaskForm):
+    sex = SelectField('sex', choices=["man", "woman"])
+    hair = SelectField('hair', choices=["long", "short"])
+    eyes = SelectField('eyes', choices=["big", "small"])
+    smile = SelectField('smile', choices=["normal", "happy", "sad"])
+    face = SelectField('face', choices=["oval", "square", "round"])
+    age = SelectField('age', choices=["young", "middle", "old"])
+    nose = SelectField('nose', choices=["big", "small"])
+
+    textInput = StringField(validators=[
+        InputRequired()],
+        render_kw={"placeholder": "enter the text description of the face"})
+
+    submit = SubmitField('Demo')
+
+
+@app.route('/demo', methods=['GET', 'POST'])
+def demo():
+    form = DemoForm()
+    if request.method == "POST":
+        data = {key: value for key, value in form.data.items() if key != "csrf_token"}
+        return jsonify(data)
+    return render_template('demo.html', form=form)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])

@@ -1,52 +1,11 @@
-<!doctype html>
-
-<head><title>Home</title>
-    <meta charset=utf-8>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
-<body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">GANs</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Demo <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-
-    <a class="button" href="{{ url_for('login') }}">Sign in</a>
-
-  </div>
-</nav>
+{% extends "base.html" %}
+{% block title %} Home page {% endblock %}
 
 
-    <h2> Our app </h2>
-    <h3> Choose face features: </h3>
+{% block content %}
+
     <br>
+<h2> Our app </h2>
 
-     <form method="POST">
-    {{ form.csrf_token }}
-    {{ form.sex }}
-    {{ form.hair }}
-     {{ form.eyes }}
-     {{ form.smile }}
-     {{ form.face }}
-     {{ form.age }}
-     {{ form.nose }}
-    <input type="submit">
-    </form>
+{% endblock %}
 
-<br><br><br>
-<h2> Hello </h2>
-<br>
-{% for role in roles %}
-<h3>{{role.role_name}}</h3>
-{% endfor %}
-
-
-</body>

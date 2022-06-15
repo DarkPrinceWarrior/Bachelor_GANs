@@ -36,7 +36,7 @@ class UserAccount(Base, UserMixin):
                           cascade='all, delete')
 
     def get_id(self):
-        return (self.phy_id)
+        return self.phy_id
 
     def dictionarize(self):
         return {

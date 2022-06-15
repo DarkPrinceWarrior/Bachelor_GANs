@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Demo</title>
-</head>
-<body>
 
-</body>
-</html>
+
+
+{% extends "base.html" %}
+{% block title %} Home page {% endblock %}
+
+
+{% block content %}
+
+    <br>
+ <h2> Try this demo </h2>
+
+    <h3> Choose face features: </h3>
+    <br>
+
+     <form method="POST">
+    {{ form.csrf_token }}
+    {{ form.sex }}
+    {{ form.hair }}
+     {{ form.eyes }}
+     {{ form.smile }}
+     {{ form.face }}
+     {{ form.age }}
+     {{ form.nose }}
+      <br>  <br>  <br>
+
+         {{ form.hidden_tag() }}
+        {{ form.textInput }}
+
+    <input type="submit">
+    </form>
+
+{% endblock %}
+
+
+
+
+
+
