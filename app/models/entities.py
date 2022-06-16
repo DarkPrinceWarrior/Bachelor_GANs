@@ -9,15 +9,37 @@ class Role(Base):
     role_id = Column(Integer, primary_key=True, autoincrement=True)
     role_name = Column(String(40), nullable=False, unique=True)
 
-    users = relationship('UserAccount', backref='role_app', lazy="joined",
-                         cascade='all, delete')
-    companies = relationship('CompanyAccount', backref='role_app', lazy="joined",
+    usertypes = relationship('Usertype', backref='role_app', lazy="joined",
                              cascade='all, delete')
 
     def dictionarize(self):
         return {
             "role_id": self.role_id,
             "role_name": self.role_name
+        }
+
+
+class Usertype(Base):
+    __tablename__ = 'usertype'
+
+    user_id = Column(Integer, primary_key=True, autoincrement=True)
+    user_token = Column(String(255), nullable=False, unique=True)
+    role_id = Column(Integer, ForeignKey('role_app.role_id'), nullable=False)
+
+    users = relationship('UserAccount', backref='usertype', lazy="joined",
+                         cascade='all, delete')
+
+    companies = relationship('CompanyAccount', backref='usertype', lazy="joined",
+                             cascade='all, delete')
+
+    images = relationship('Image', backref='usertype', lazy="joined",
+                          cascade='all, delete')
+
+    def dictionarize(self):
+        return {
+            "user_id": self.user_id,
+            "user_token": self.user_token,
+            "role_id": self.role_id
         }
 
 
@@ -30,10 +52,7 @@ class UserAccount(Base, UserMixin):
     phyone_password = Column(String(255), nullable=False)
     subscription_ = Column(Boolean, nullable=False)
 
-    role_id = Column(Integer, ForeignKey('role_app.role_id'), nullable=False)
-
-    images = relationship('Image', backref='phyone', lazy="joined",
-                          cascade='all, delete')
+    user_id = Column(Integer, ForeignKey('usertype.user_id'), nullable=False, unique=True)
 
     def get_id(self):
         return self.phy_id
@@ -45,7 +64,7 @@ class UserAccount(Base, UserMixin):
             "email": self.email,
             "phyone_password": self.phyone_password,
             "subscription": self.subscription,
-            "role_id": self.fk_role_id
+            "user_id": self.user_id
         }
 
 
@@ -64,10 +83,7 @@ class CompanyAccount(Base):
     jurone_password = Column(String(255), nullable=False)
     subscription_ = Column(Boolean, nullable=False)
 
-    role_id = Column(Integer, ForeignKey('role_app.role_id'), nullable=False)
-
-    images = relationship('Image', backref='jurone', lazy="joined",
-                          cascade='all, delete')
+    user_id = Column(Integer, ForeignKey('usertype.user_id'), nullable=False, unique=True)
 
     def dictionarize(self):
         return {
@@ -82,7 +98,7 @@ class CompanyAccount(Base):
             "website": self.website,
             "jurone_password": self.jurone_password,
             "subscription": self.subscription,
-            "role_id": self.fk_role_id
+            "user_id": self.user_id
         }
 
 
@@ -90,15 +106,12 @@ class Image(Base):
     __tablename__ = 'image'
 
     image_id = Column(Integer, primary_key=True, autoincrement=True)
-    image_path = Column(String(40), nullable=False, unique=True)
-
-    fk_jur_id = Column(Integer, ForeignKey('company_account.jur_id'), nullable=False)
-    fk_phy_id = Column(Integer, ForeignKey('user_account.phy_id'), nullable=False)
+    image_path = Column(String(100), nullable=False)
+    fk_user_id  = Column(Integer, ForeignKey('usertype.user_id'), nullable=False)
 
     def dictionarize(self):
         return {
             "image_id": self.image_id,
             "image_path": self.image_path,
-            "fk_jur_id": self.fk_jur_id,
-            "fk_phy_id": self.fk_phy_id
+            "user_id": self.fk_user_id
         }

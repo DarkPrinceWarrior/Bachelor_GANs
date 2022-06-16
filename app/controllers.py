@@ -1,10 +1,11 @@
+import numpy as np
 from flask import render_template, request, jsonify, redirect, url_for, flash
 from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import InputRequired, Length, ValidationError
 from models.db_setup import db_session
-from models.entities import Role, UserAccount
+from models.entities import Role, UserAccount, Usertype, Image
 
 from app import app
 from app import bcrypt
@@ -80,10 +81,17 @@ def register():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf8')
+
+        user_token = str(np.random.randint(99999))
+        new_usertype = Usertype(user_token=user_token, role_id=2)
+        db_session.add(new_usertype)
+        db_session.commit()
+
+        usertype = db_session.query(Usertype).filter_by(user_token=user_token).first()
         new_user = UserAccount(login=form.login.data, phyone_password=hashed_password,
                                email=form.email.data,
                                subscription_=True,
-                               role_id=3)
+                               user_id=usertype.user_id)
 
         db_session.add(new_user)
         db_session.commit()
@@ -120,14 +128,16 @@ def demo():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    path = "models/images_storage/mordor.jpg"
     return render_template('dashboard.html')
 
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    return render_template('profile.html')
+    # path = "models/assets/mordor.png"
+    user_type = db_session.query(Usertype).filter_by(user_id=5).first()
+    user_image = db_session.query(Image).filter_by(fk_user_id=user_type.user_id).first()
+    return render_template('profile.html', image=user_image.image_path)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
