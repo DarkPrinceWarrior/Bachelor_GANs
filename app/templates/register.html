@@ -10,7 +10,7 @@
 
  <main class="form-signin w-25 m-auto">
       <form  class="form-signin" method="POST" action="/register">
-        <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+        <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
             {{ form.hidden_tag() }}
         <div class="form-floating">
              {{ form.login }}
@@ -24,13 +24,13 @@
             {{ form.password }}
         </div>
           <br>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">sign up</button>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">зарегистрироваться</button>
       </form>
     </main>
 
 
   <br>
-  <a href="{{ url_for('register') }}">Register for company</a>
+  <a href="{{ url_for('register') }}">Регистрация для юридических лиц</a>
 
 {% endblock %}
 

@@ -36,7 +36,7 @@ class LoginForm(FlaskForm):
         InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control", "placeholder": "Login"})
 
     password = PasswordField(validators=[
-        InputRequired(), Length(min=8, max=20)], render_kw={"class": "form-control","placeholder": "Password"})
+        InputRequired(), Length(min=8, max=20)], render_kw={"class": "form-control", "placeholder": "Password"})
 
     remember = BooleanField("remember me")
 
@@ -58,13 +58,13 @@ def login():
 
 class RegisterForm(FlaskForm):
     login = StringField(validators=[
-        InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control","placeholder": "Login"})
+        InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control", "placeholder": "Login"})
 
     email = StringField(validators=[
-        InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control","placeholder": "Email"})
+        InputRequired(), Length(min=4, max=20)], render_kw={"class": "form-control", "placeholder": "Email"})
 
     password = PasswordField(validators=[
-        InputRequired(), Length(min=8, max=20)], render_kw={"class": "form-control","placeholder": "Password"})
+        InputRequired(), Length(min=8, max=20)], render_kw={"class": "form-control", "placeholder": "Password"})
 
     submit = SubmitField('Register')
 
@@ -111,7 +111,7 @@ class DemoForm(FlaskForm):
 
     textInput = StringField(validators=[
         InputRequired()],
-        render_kw={"placeholder": "enter the text description of the face"})
+        render_kw={"min-width":"300px", "max-width":"500px", "placeholder": "введите текстовое описание лица"})
 
     submit = SubmitField('Demo')
 

@@ -2,32 +2,42 @@
 
 
 {% extends "base.html" %}
+
+ {% block css_link %}
+{#     <link type="text/css" href="../static/styles/signin.css" rel="stylesheet">#}
+     <link type="text/css" href="../static/styles/input.css" rel="stylesheet">
+ {% endblock %}
+
 {% block title %} Home page {% endblock %}
 
 
 {% block content %}
 
-    <br>
- <h2> Try this demo </h2>
 
-    <h3> Choose face features: </h3>
+
+{#    <h3> Choose face features: </h3>#}
     <br>
 
+    <p>
+    <h5>Напишите текстовый запрос и получите сгенерированную ruDALL-E картинку</h5>
+    </p>
+<br>
      <form method="POST">
     {{ form.csrf_token }}
-    {{ form.sex }}
-    {{ form.hair }}
-     {{ form.eyes }}
-     {{ form.smile }}
-     {{ form.face }}
-     {{ form.age }}
-     {{ form.nose }}
-      <br>  <br>  <br>
+{#    {{ form.sex }}#}
+{#    {{ form.hair }}#}
+{#     {{ form.eyes }}#}
+{#     {{ form.smile }}#}
+{#     {{ form.face }}#}
+{#     {{ form.age }}#}
+{#     {{ form.nose }}#}
+{#      <br>  <br>  <br>#}
 
          {{ form.hidden_tag() }}
         {{ form.textInput }}
-
-    <input type="submit">
+<br>
+         <br>
+  <button class="w-40 btn btn-primary" type="submit">Отправить</button>
     </form>
 
 {% endblock %}

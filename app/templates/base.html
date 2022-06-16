@@ -8,7 +8,9 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta name="theme-color" content="#712cf9">
 
-{#    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">#}
+     {% block css_link %}
+     {% endblock %}
+
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -61,8 +63,6 @@
         -webkit-overflow-scrolling: touch;
       }
     </style>
-
-    <link href="{{url_for("static", filename="signin.css")}}" rel="stylesheet">
     <title>{% block title %} {% endblock %}</title>
   </head>
   <body class="text-center">
@@ -74,13 +74,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
              <li class="nav-item active">
-               <a class="navbar-brand" href="{{ url_for('demo')}}">Demo</a>
+               <a class="navbar-brand" href="{{ url_for('demo')}}">Демо</a>
              </li>
                   <li class="nav-item active">
-                 <a class="navbar-brand" href="{{ url_for('profile') }}">Profile</a>
+                 <a class="navbar-brand" href="{{ url_for('profile') }}">Профиль</a>
                 </li>
                  <li class="nav-item active ">
-                  <a class="navbar-brand" href="{{ url_for('login') }}">Sign in</a>
+                  <a class="navbar-brand" href="{{ url_for('login') }}">Вход</a>
                 </li>
             </ul>
         </div>

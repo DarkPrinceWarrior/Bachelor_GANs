@@ -1,0 +1,14 @@
+/*body {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    width: 100vw;*/
+/*    height: 100vh;*/
+/*}*/
+input {
+    padding: 10px;
+    align-self: center;
+    min-width: 700px;
+    min-height: 60px;
+
+}
