@@ -1,8 +1,10 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+import config
 
-engine = create_engine('postgresql://postgres:123@localhost:5432/gen_Imagedb')
+engine = create_engine(f'postgresql://postgres:'
+                       f'{config.password}@localhost:{config.port}/{config.db_name}')
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))

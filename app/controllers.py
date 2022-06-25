@@ -1,4 +1,4 @@
-import numpy as np
+import random
 from flask import render_template, request, jsonify, redirect, url_for, flash
 from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
@@ -82,7 +82,7 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf8')
 
-        user_token = str(np.random.randint(99999))
+        user_token = str(random.randint(0, 99999))
         new_usertype = Usertype(user_token=user_token, role_id=2)
         db_session.add(new_usertype)
         db_session.commit()
@@ -135,7 +135,7 @@ def dashboard():
 @login_required
 def profile():
     # path = "models/assets/mordor.png"
-    user_type = db_session.query(Usertype).filter_by(user_id=5).first()
+    user_type = db_session.query(Usertype).filter_by(user_id=4).first()
     user_image = db_session.query(Image).filter_by(fk_user_id=user_type.user_id).first()
     return render_template('profile.html', image=user_image.image_path)
 

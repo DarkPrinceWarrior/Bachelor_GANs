@@ -5,11 +5,11 @@ from models.db_setup import Base
 
 
 class Role(Base):
-    __tablename__ = 'role_app'
+    __tablename__ = 'role'
     role_id = Column(Integer, primary_key=True, autoincrement=True)
     role_name = Column(String(40), nullable=False, unique=True)
 
-    usertypes = relationship('Usertype', backref='role_app', lazy="joined",
+    usertypes = relationship('Usertype', backref='role', lazy="joined",
                              cascade='all, delete')
 
     def dictionarize(self):
@@ -24,7 +24,7 @@ class Usertype(Base):
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
     user_token = Column(String(255), nullable=False, unique=True)
-    role_id = Column(Integer, ForeignKey('role_app.role_id'), nullable=False)
+    role_id = Column(Integer, ForeignKey('role.role_id'), nullable=False)
 
     users = relationship('UserAccount', backref='usertype', lazy="joined",
                          cascade='all, delete')
@@ -107,11 +107,11 @@ class Image(Base):
 
     image_id = Column(Integer, primary_key=True, autoincrement=True)
     image_path = Column(String(100), nullable=False)
-    fk_user_id  = Column(Integer, ForeignKey('usertype.user_id'), nullable=False)
+    fk_user_id = Column(Integer, ForeignKey('usertype.user_id'), nullable=False)
 
     def dictionarize(self):
         return {
             "image_id": self.image_id,
             "image_path": self.image_path,
-            "user_id": self.fk_user_id
+            "fk_user_id": self.fk_user_id
         }
