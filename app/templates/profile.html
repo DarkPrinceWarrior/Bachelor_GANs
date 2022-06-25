@@ -4,7 +4,9 @@
 {% block content %}
 
     <br>
-<h2> User profile </h2>
-    <img src="../static/mordor.png" width="500" height="400" alt="">
-
+<h2> Hello {{ user_name }}</h2>
+     <br>
+        {% for image_path in image %}
+              <img src="../{{ image_path }}" width="300" height="200" alt="">
+        {% endfor %}
 {% endblock %}

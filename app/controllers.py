@@ -1,5 +1,12 @@
+import datetime
 import random
-from flask import render_template, request, jsonify, redirect, url_for, flash
+from functools import wraps
+
+import jwt
+import requests
+import uuid
+import jsonify
+from flask import render_template, request, jsonify, redirect, url_for, flash, session
 from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, PasswordField, SubmitField, BooleanField
@@ -12,7 +19,36 @@ from app import bcrypt
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+
+# specific handler
+login_manager.login_view = '/login'
+
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+
+        if session["token"] is not None:
+            token = session["token"]
+
+        try:
+
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+
+            current_user = db_session.query(UserAccount).filter_by(phy_id=data['user_token']).first()
+        except:
+            return jsonify({'message': 'Token is invalid!'}), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
 
 
 @login_manager.user_loader
@@ -47,9 +83,15 @@ def login():
     if form.validate_on_submit():
         user = db_session.query(UserAccount).filter_by(login=form.login.data).first()
         if user and bcrypt.check_password_hash(user.phyone_password, form.password.data):
+            token = jwt.encode(
+                {'user_token': user.phy_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+                app.config["SECRET_KEY"])
+            print(token)
+            session["token"] = token
             login_user(user)
+            session["id"] = user.user_id
             flash("you were just logged in!", "info")
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('index'))
         else:
             flash("bad username or password")
 
@@ -82,8 +124,9 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf8')
 
-        user_token = str(random.randint(0, 99999))
-        new_usertype = Usertype(user_token=user_token, role_id=2)
+        # user token id not just real token
+        user_token = str(uuid.uuid4())
+        new_usertype = Usertype(user_token=user_token, role_id=2)  # just user
         db_session.add(new_usertype)
         db_session.commit()
 
@@ -111,7 +154,7 @@ class DemoForm(FlaskForm):
 
     textInput = StringField(validators=[
         InputRequired()],
-        render_kw={"min-width":"300px", "max-width":"500px", "placeholder": "введите текстовое описание лица"})
+        render_kw={"min-width": "300px", "max-width": "500px", "placeholder": "введите текстовое описание лица"})
 
     submit = SubmitField('Demo')
 
@@ -133,15 +176,19 @@ def dashboard():
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
-def profile():
-    # path = "models/assets/mordor.png"
-    user_type = db_session.query(Usertype).filter_by(user_id=4).first()
-    user_image = db_session.query(Image).filter_by(fk_user_id=user_type.user_id).first()
-    return render_template('profile.html', image=user_image.image_path)
+@token_required
+def profile(current_user):
+    # path = "static/mordor.png" for DB pathname
+    # user_id = session['id']
+    user_image = db_session.query(Image).filter_by(fk_user_id=current_user.user_id).all()
+    image_path_list = [x.image_path for x in user_image]
+
+    return render_template('profile.html', image=image_path_list, user_name=current_user.login)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
+    session.pop('id')
     return redirect(url_for('login'))
