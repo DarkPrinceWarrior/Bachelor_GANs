@@ -27,7 +27,7 @@ login_manager.login_view = '/login'
 @app.before_request
 def make_session_permanent():
     session.permanent = True
-    app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+    app.permanent_session_lifetime = datetime.timedelta(minutes=60)
 
 
 def token_required(f):
@@ -39,9 +39,7 @@ def token_required(f):
             token = session["token"]
 
         try:
-
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
             current_user = db_session.query(UserAccount).filter_by(phy_id=data['user_token']).first()
         except:
             return jsonify({'message': 'Token is invalid!'}), 401
@@ -86,10 +84,8 @@ def login():
             token = jwt.encode(
                 {'user_token': user.phy_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
                 app.config["SECRET_KEY"])
-            print(token)
             session["token"] = token
             login_user(user)
-            session["id"] = user.user_id
             flash("you were just logged in!", "info")
             return redirect(url_for('index'))
         else:
@@ -179,7 +175,6 @@ def dashboard():
 @token_required
 def profile(current_user):
     # path = "static/mordor.png" for DB pathname
-    # user_id = session['id']
     user_image = db_session.query(Image).filter_by(fk_user_id=current_user.user_id).all()
     image_path_list = [x.image_path for x in user_image]
 
@@ -190,5 +185,5 @@ def profile(current_user):
 @login_required
 def logout():
     logout_user()
-    session.pop('id')
+    session.pop('token')
     return redirect(url_for('login'))

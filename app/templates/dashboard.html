@@ -4,9 +4,7 @@
 
 {% block content %}
 
-    <br>
-
-    {% with messages = get_flashed_messages() %}
+    <br>{% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
                  {% if message == "you were just logged in!"%}
@@ -15,6 +13,8 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+
+
 
 {#    <br>#}
 {#    <a href="{{url_for('logout')}}">Press here to logout</a>#}

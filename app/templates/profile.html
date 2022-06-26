@@ -4,9 +4,12 @@
 {% block content %}
 
     <br>
-<h2> Hello {{ user_name }}</h2>
+<h2> Привет {{ user_name }}</h2>
+    <h3> Это твоя галерея</h3>
+
      <br>
         {% for image_path in image %}
               <img src="../{{ image_path }}" width="300" height="200" alt="">
         {% endfor %}
+
 {% endblock %}
