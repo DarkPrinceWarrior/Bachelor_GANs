@@ -1,3 +1,6 @@
 # GANs-in-web-app
 
-1) StackGAN 
+
+stackGAN not completed implementation in the web
+
+
