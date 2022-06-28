@@ -13,3 +13,6 @@ Year = {2017},
 booktitle = {{ICCV}},
 }
 
+2) Code presented in my realization is the extension of code: https://github.com/AarohiSingla/StackGAN.git 
+3) 
+4) 
