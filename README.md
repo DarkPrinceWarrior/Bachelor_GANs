@@ -15,5 +15,10 @@ booktitle = {{ICCV}},
 
 2) Code presented in my realization is the extension of code: https://github.com/AarohiSingla/StackGAN.git 
 3) Dataset was taken from ZHOU Yutong, FFHQ-Text Dataset - https://github.com/Yutong-Zhou-cv/FFHQ-Text_Dataset.git
-4) 
-5) 
+
+
+Results:
+  unprocessed text - "This woman turns her face towards the front side. \nThis woman is about 38 to 43 years old and has narrow light-brown eyes with double eyelids"
+  
+  image generated - ![image](https://user-images.githubusercontent.com/66064451/176171190-10b70a14-d886-4007-99aa-ae87254342a1.png)
+
