@@ -22,3 +22,10 @@ Results:
   
   image generated - ![image](https://user-images.githubusercontent.com/66064451/176171190-10b70a14-d886-4007-99aa-ae87254342a1.png)
 
+
+
+Further steps:
+ 1) Deploy to paperspace
+ 2) Connect files to Deta drive 
+ 3) User profile
+ 4) Company profile
