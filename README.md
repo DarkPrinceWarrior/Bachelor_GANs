@@ -14,5 +14,6 @@ booktitle = {{ICCV}},
 }
 
 2) Code presented in my realization is the extension of code: https://github.com/AarohiSingla/StackGAN.git 
-3) 
+3) Dataset was taken from ZHOU Yutong, FFHQ-Text Dataset - https://github.com/Yutong-Zhou-cv/FFHQ-Text_Dataset.git
 4) 
+5) 
