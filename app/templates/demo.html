@@ -4,7 +4,6 @@
 {% extends "base.html" %}
 
  {% block css_link %}
-{#     <link type="text/css" href="../static/styles/signin.css" rel="stylesheet">#}
      <link type="text/css" href="../static/styles/input.css" rel="stylesheet">
  {% endblock %}
 
@@ -23,14 +22,6 @@
     <br>
      <form method="POST">
     {{ form.csrf_token }}
-{#    {{ form.sex }}#}
-{#    {{ form.hair }}#}
-{#     {{ form.eyes }}#}
-{#     {{ form.smile }}#}
-{#     {{ form.face }}#}
-{#     {{ form.age }}#}
-{#     {{ form.nose }}#}
-{#      <br>  <br>  <br>#}
 
          {{ form.hidden_tag() }}
         {{ form.textInput }}

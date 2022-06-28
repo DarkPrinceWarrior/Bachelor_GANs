@@ -3,20 +3,23 @@
 
 
 {% block content %}
+    <br>
+    <h2> Сохранить картинку</h2>
 
-    <br>{% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                 {% if message == "you were just logged in!"%}
-                    <h2>{{ message }}</h2>
-                 {% endif %}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    <br>
+
+    <br>
+
+     <div class="center">
+        <form method="POST" action="/save/image" enctype="multipart/form-data">
+            <button>Сохранить</button>
+        </form>
+     </div>
+     {{ image }}
+
+{#     <img  width="300" height="200" alt="">#}
 
 
 
-{#    <br>#}
-{#    <a href="{{url_for('logout')}}">Press here to logout</a>#}
 
 {% endblock %}

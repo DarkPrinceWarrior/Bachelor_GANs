@@ -1,9 +1,6 @@
 import datetime
-import random
 from functools import wraps
-
 import jwt
-import requests
 import uuid
 import jsonify
 from flask import render_template, request, jsonify, redirect, url_for, flash, session
@@ -11,7 +8,7 @@ from flask_login import login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import InputRequired, Length, ValidationError
-from models.db_setup import db_session
+from models.db_setup import db_session, photos
 from models.entities import Role, UserAccount, Usertype, Image
 
 from app import app
@@ -140,14 +137,6 @@ def register():
 
 
 class DemoForm(FlaskForm):
-    sex = SelectField('sex', choices=["man", "woman"])
-    hair = SelectField('hair', choices=["long", "short"])
-    eyes = SelectField('eyes', choices=["big", "small"])
-    smile = SelectField('smile', choices=["normal", "happy", "sad"])
-    face = SelectField('face', choices=["oval", "square", "round"])
-    age = SelectField('age', choices=["young", "middle", "old"])
-    nose = SelectField('nose', choices=["big", "small"])
-
     textInput = StringField(validators=[
         InputRequired()],
         render_kw={"min-width": "300px", "max-width": "500px", "placeholder": "введите текстовое описание лица"})
@@ -159,15 +148,11 @@ class DemoForm(FlaskForm):
 def demo():
     form = DemoForm()
     if request.method == "POST":
-        data = {key: value for key, value in form.data.items() if key != "csrf_token"}
-        return jsonify(data)
+        text_input = form.data["textInput"]
+
+
+        return jsonify(text_input)
     return render_template('demo.html', form=form)
-
-
-@app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def dashboard():
-    return render_template('dashboard.html')
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -187,3 +172,16 @@ def logout():
     logout_user()
     session.pop('token')
     return redirect(url_for('login'))
+
+
+@app.route('/save/image', methods=['GET', 'POST'])
+# @login_required
+def saveImage():
+    image = None
+    if request.method == "POST":
+        file_name = photos.put(name="moscow.jpg",
+                               path="static/moscow.jpg")
+
+        # image = photos.get("mordor.png")
+
+    return render_template('dashboard.html', image=image)
