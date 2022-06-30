@@ -25,7 +25,8 @@ Results:
 
 
 Further steps:
- 1) Deploy to paperspace
- 2) Connect files to Deta drive 
- 3) User profile
- 4) Company profile
+ 1) Improve embedding and try out Dataset with more samples 
+ 2) Deploy to paperspace
+ 3) Connect files to Deta drive 
+ 4) User profile
+ 5) Company profile
